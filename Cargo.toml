@@ -10,6 +10,8 @@ edition = "2021"
 
 [features]
 alloc = []
-default = [ "alloc" ]
+
+default = [ "alloc", "heapless" ]
 
 [dependencies]
+heapless = { version = "0.7.9", optional = true }

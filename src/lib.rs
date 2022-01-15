@@ -76,6 +76,17 @@ impl <T: Debug, const N: usize> Stor<T> for Const<N> {
     type Bytes = [u8; N];
 }
 
+/// Heapless marker uses [`heapless`] containers
+#[cfg(feature = "heapless")]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct Heapless<const N: usize>;
+
+#[cfg(feature = "heapless")]
+impl <T: Debug, const N: usize> Stor<T> for Heapless<N> {
+    type List = heapless::Vec<T, N>;
+    type String = heapless::String<N>;
+    type Bytes = heapless::Vec<u8, N>;
+}
 
 #[cfg(test)]
 mod tests {
