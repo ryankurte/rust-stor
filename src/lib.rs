@@ -34,7 +34,7 @@ use core::marker::PhantomData;
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-/// Stor trait defines types for references
+/// [`Stor`] trait provides abstract container types
 pub trait Stor<Inner: Debug = ()>: Debug {
     /// Type for holding lists of Inner objects
     type List: AsRef<[Inner]> + Debug;
@@ -50,7 +50,7 @@ pub trait Stor<Inner: Debug = ()>: Debug {
 pub struct Owned;
 
 #[cfg(feature = "alloc")]
-impl <T: Debug> Stor<T> for Owned {
+impl <T: Clone + Debug> Stor<T> for Owned {
     type List = alloc::vec::Vec<T>;
     type String = alloc::string::String;
     type Bytes = alloc::vec::Vec<u8>;
@@ -60,7 +60,7 @@ impl <T: Debug> Stor<T> for Owned {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Ref<'a> (PhantomData<&'a ()>);
 
-impl <'a, T: Debug + 'a> Stor<T> for Ref<'a> {
+impl <'a, T: Clone + Debug + 'a> Stor<T> for Ref<'a> {
     type List = &'a [T];
     type String = &'a str;
     type Bytes = &'a [u8];
@@ -70,7 +70,7 @@ impl <'a, T: Debug + 'a> Stor<T> for Ref<'a> {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Const<const N: usize>;
 
-impl <T: Debug, const N: usize> Stor<T> for Const<N> {
+impl <T: Clone + Debug, const N: usize> Stor<T> for Const<N> {
     type List = [T; N];
     type String = &'static str;
     type Bytes = [u8; N];
@@ -82,7 +82,7 @@ impl <T: Debug, const N: usize> Stor<T> for Const<N> {
 pub struct Heapless<const N: usize>;
 
 #[cfg(feature = "heapless")]
-impl <T: Debug, const N: usize> Stor<T> for Heapless<N> {
+impl <T: Clone + Debug, const N: usize> Stor<T> for Heapless<N> {
     type List = heapless::Vec<T, N>;
     type String = heapless::String<N>;
     type Bytes = heapless::Vec<u8, N>;
