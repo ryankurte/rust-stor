@@ -1,6 +1,6 @@
 [package]
 name = "stor"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Ryan Kurte <ryankurte@gmail.com>"]
 description = "Helpers for genericising over storage types"
 repository = "https://github.com/ryankurte/rust-stor"
